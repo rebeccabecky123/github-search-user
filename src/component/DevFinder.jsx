@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapPin, Link, Building, Twitter, Search } from 'lucide-react';
 
 export default function DevFinder() {
@@ -68,8 +68,19 @@ export default function DevFinder() {
     }
   };
 
+  useEffect(()=>{
+    const storedTheme =localStorage.getItem('theme')
+    if(storedTheme !==null){
+      setDarkMode(JSON.parse(storedTheme))
+    }
+  },[])
+
   const toggleTheme = () => {
-    setDarkMode(!darkMode);
+   setDarkMode((prevMode)=>{
+    const newMode=!prevMode;
+    localStorage.setItem('theme',JSON.stringify(newMode))
+    return newMode
+   })
   };
 
   return (
@@ -86,6 +97,7 @@ export default function DevFinder() {
           >
             {darkMode ? 'Light' : 'Dark'}
             {darkMode ? 
+
               <span className="ml-2">☀️</span> : 
               <span className="ml-2">🌙</span>
             }
